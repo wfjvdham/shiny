@@ -237,3 +237,9 @@ sd_section("Embedding",
     "maskReactiveContext"
   )
 )
+sd_section("Testing",
+  "Functions for testing Shiny applications",
+  c(
+    "testApp"
+  )
+)

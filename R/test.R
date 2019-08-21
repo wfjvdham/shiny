@@ -51,6 +51,13 @@ testApp <- function(appDir="."){
     return()
   }
 
+  oldwd <- getwd()
+  on.exit({
+    setwd(oldwd)
+  }, add=TRUE)
+
+  setwd(testsDir)
+
   # Otherwise source all the runners.
   lapply(runners, sourceUTF8)
 }
