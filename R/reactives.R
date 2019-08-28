@@ -1734,6 +1734,7 @@ reactivePoll <- function(intervalMillis, session, checkFunc, valueFunc) {
     if (re_finalized) {
       o$destroy()
       rm(o, envir = parent.env(environment()))
+      return()
     }
 
     rv$cookie <- checkFunc()
