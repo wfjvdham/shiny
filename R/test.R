@@ -15,11 +15,13 @@ isShinyTest <- function(text){
 #' directories under `tests/`.
 #'
 #' TODO: add in filters for specific tests, or high-level toggles for particular types of tests. Or should that just be a filter on the runners?
-#' TODO: make shinytest suggestable. Right now we'd have to import it.
+#' @param appDir The base directory for the application.
 #'
-#' @details First checks to see if the `.R`` files in the `tests/` directory are
-#' all [shinytest](https://rstudio.github.io/shinytest/)s; if so, just calls out
-#' to [shinytest::testApp()].
+#' @details Historically, [shinytest](https://rstudio.github.io/shinytest/)
+#'   recommended placing tests at the top-level of the `tests/` directory. In
+#'   order to support that model, `testApp` first checks to see if the `.R`
+#'   files in the `tests/` directory are all shinytests; if so, just calls out
+#'   to [shinytest::testApp()].
 #' @export
 testApp <- function(appDir="."){
   testsDir <- file.path(appDir, "tests")
@@ -35,7 +37,7 @@ testApp <- function(appDir="."){
 
   # Inspect each runner to see if it appears to be a shinytest
   isST <- vapply(runners, function(r){
-    text <- readLines(file.path(testsDir, runners))
+    text <- readLines(file.path(testsDir, runners), warn = FALSE)
     isShinyTest(text)
   }, logical(1))
 
@@ -59,5 +61,6 @@ testApp <- function(appDir="."){
   setwd(testsDir)
 
   # Otherwise source all the runners.
+  # TODO: what env is this supposed to be in?
   lapply(runners, sourceUTF8)
 }

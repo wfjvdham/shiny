@@ -6,6 +6,9 @@
 \usage{
 testApp(appDir = ".")
 }
+\arguments{
+\item{appDir}{The base directory for the application.}
+}
 \description{
 Sources the \code{.R} files in the top-level of \code{tests/} much like \code{R CMD check}.
 These files are typically simple runners for tests nested in other
@@ -13,9 +16,10 @@ directories under \code{tests/}.
 }
 \details{
 TODO: add in filters for specific tests, or high-level toggles for particular types of tests. Or should that just be a filter on the runners?
-TODO: make shinytest suggestable. Right now we'd have to import it.
 
-First checks to see if the \code{.R`` files in the }tests/` directory are
-all \href{https://rstudio.github.io/shinytest/}{shinytest}s; if so, just calls out
+Historically, \href{https://rstudio.github.io/shinytest/}{shinytest}
+recommended placing tests at the top-level of the \code{tests/} directory. In
+order to support that model, \code{testApp} first checks to see if the \code{.R}
+files in the \code{tests/} directory are all shinytests; if so, just calls out
 to \code{\link[shinytest:testApp]{shinytest::testApp()}}.
 }
