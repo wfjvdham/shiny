@@ -31,13 +31,15 @@ testApp <- function(appDir="."){
   runners <- list.files(testsDir, pattern="\\.r$", ignore.case = TRUE)
 
   if (length(runners) == 0){
+    # TODO: should this be an error?
     message("No test runners found in ", testsDir)
-    return()
+    # TODO: what should we return?
+    return(NULL)
   }
 
   # Inspect each runner to see if it appears to be a shinytest
   isST <- vapply(runners, function(r){
-    text <- readLines(file.path(testsDir, runners), warn = FALSE)
+    text <- readLines(file.path(testsDir, r), warn = FALSE)
     isShinyTest(text)
   }, logical(1))
 
@@ -60,7 +62,12 @@ testApp <- function(appDir="."){
 
   setwd(testsDir)
 
-  # Otherwise source all the runners.
-  # TODO: what env is this supposed to be in?
-  lapply(runners, sourceUTF8)
+  # Otherwise source all the runners -- each in their own environment.
+  lapply(runners, function(r){
+    env <- new.env(parent=emptyenv())
+    sourceUTF8(r, envir=env)
+  })
+
+  # TODO: trycatch the runs so we can return something more meaningful
+  NULL
 }
